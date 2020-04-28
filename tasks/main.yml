@@ -1,0 +1,56 @@
+---
+# tasks file for coffeesprout.nfsd
+
+- name: enable nfsd services
+  sysrc:
+    name: "{{ item }}_enable"
+    value: "YES"
+  with_items:
+  - rpcbind
+  - nfs_server
+  tags:
+  - startup
+
+- name: set mountd_flags
+  sysrc:
+    name: mountd_flags
+    value: "{{ mountd_flags }}"
+
+- name: set rpcbind_flags
+  sysrc:
+    name: rpcbind_flags
+    value: "{{ rpcbind_flags }}"
+
+- name: set nfs_server_flags
+  sysrc:
+    name: nfs_server_flags
+    value: "{{ nfs_server_flags }}"
+
+- name: start nfsd services
+  service:
+    name: nfsd
+    state: started
+  tags:
+  - startup
+
+- name: enable nfsd services
+  sysrc:
+    name: "{{ item }}_enable"
+    value: "YES"
+  when: nfsd_locking
+  with_items:
+  - rpc_lockd
+  - rpc_statd
+  tags:
+  - startup
+
+- name: start nfs locking services
+  service:
+    name: "{{ item }}"
+    state: started
+  with_items:
+  - lockd
+  - statd
+  when: nfsd_locking
+  tags:
+  - startup
