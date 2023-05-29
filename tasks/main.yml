@@ -2,7 +2,7 @@
 # tasks file for coffeesprout.nfsd
 
 - name: enable nfsd services
-  sysrc:
+  community.general.sysrc:
     name: "{{ item }}_enable"
     value: "YES"
   with_items:
@@ -12,17 +12,17 @@
   - startup
 
 - name: set mountd_flags
-  sysrc:
+  community.general.sysrc:
     name: mountd_flags
     value: "{{ mountd_flags }}"
 
 - name: set rpcbind_flags
-  sysrc:
+  community.general.sysrc:
     name: rpcbind_flags
     value: "{{ rpcbind_flags }}"
 
 - name: set nfs_server_flags
-  sysrc:
+  community.general.sysrc:
     name: nfs_server_flags
     value: "{{ nfs_server_flags }}"
 
@@ -34,7 +34,7 @@
   - startup
 
 - name: enable nfsd services
-  sysrc:
+  community.general.sysrc:
     name: "{{ item }}_enable"
     value: "YES"
   when: nfsd_locking
